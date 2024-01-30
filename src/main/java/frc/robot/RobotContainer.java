@@ -17,6 +17,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.utils.DoubleTransformer;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -102,9 +103,14 @@ public class RobotContainer {
     }
 
     private void setupVision() {
-        var subsystem = new VisionSubsystem();
+        try {
+            var subsystem = new VisionSubsystem();
 
-        m_vision = Optional.of(subsystem);
+            m_vision = Optional.of(subsystem);
+        } catch (IOException e) {
+            m_vision = Optional.empty();
+        }
+
     }
 
     private void setupSwerveDrive(Optional<VisionSubsystem> visionSubsystem, RobotFrame bot) {
