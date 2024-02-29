@@ -25,7 +25,7 @@ public class ShooterClimberSubsystem extends SubsystemBase {
         shooterMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
         shooterAngleMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         shooterAngleMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        shooterAngleEncoder = new Encoder(0, 1);
+        shooterAngleEncoder = new Encoder(2, 3);
         shooterAngleController = new PIDController(0.1, 0.1, 0.1);
 
     }
@@ -52,8 +52,7 @@ public class ShooterClimberSubsystem extends SubsystemBase {
     }
 
     public void stopShooter() {
-        shooterMotor1.set(0);
-        shooterMotor2.set(0);
+
     }
 
     public Command cShootOnSpeaker() {

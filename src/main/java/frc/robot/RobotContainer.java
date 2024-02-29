@@ -5,6 +5,9 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.ShooterModeCommand;
 import frc.robot.commands.SwerveDrive.FieldRelativeAbsoluteAngleDrive;
 import frc.robot.commands.SwerveDrive.FieldRelativeRotationRateDrive;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -22,7 +25,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
     // The robot's subsystems are defined here...
@@ -39,6 +41,8 @@ public class RobotContainer {
     public RobotContainer() {
 
         setupSwerveDrive();
+        setupIntake();
+        setupShooterClimber();
 
     }
 
@@ -111,25 +115,29 @@ public class RobotContainer {
     private void setupIntake() {
         var intake = new IntakeSubsystem();
 
-        // Intake a note from the ground
-        m_driverController.rightStick().whileTrue(intake.cIntakeRun());
-
         m_intake = Optional.of(intake);
+
+        // Create IntakeCommand
+        Command IntakeCommand = new IntakeCommand(intake);
+
+        m_driverController.rightTrigger().whileTrue(IntakeCommand);
     }
 
-    private void setupShooterClimber() {
+    private boolean setupShooterClimber() {
         var shooterClimber = new ShooterClimberSubsystem();
-
-        // Shoot on speaker
-        m_operatorController.rightTrigger().whileTrue(shooterClimber.cShootOnSpeaker());
-
-        // Shoot on amp
-        m_operatorController.leftTrigger().whileTrue(shooterClimber.cShootOnAmp());
-
-        // Decide shooter angle
-        m_operatorController.rightBumper().whileTrue(getAutonomousCommand());
+        boolean shooterMode = true;
 
         m_shooterClimber = Optional.of(shooterClimber);
+
+        Command ShooterCommand = new ShooterCommand(shooterClimber, shooterMode);
+        Command ShooterModeCommand = new ShooterModeCommand();
+
+        m_driverController.leftTrigger().whileTrue(ShooterCommand);
+
+        m_driverController.leftBumper().whileTrue(ShooterModeCommand);
+
+        return shooterMode;
+
     }
 
 }
