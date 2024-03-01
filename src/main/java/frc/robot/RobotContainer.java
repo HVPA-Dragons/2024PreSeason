@@ -7,7 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.ShooterModeCommand;
+
 import frc.robot.commands.SwerveDrive.FieldRelativeAbsoluteAngleDrive;
 import frc.robot.commands.SwerveDrive.FieldRelativeRotationRateDrive;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -123,20 +123,15 @@ public class RobotContainer {
         m_driverController.rightTrigger().whileTrue(IntakeCommand);
     }
 
-    private boolean setupShooterClimber() {
+    private void setupShooterClimber() {
         var shooterClimber = new ShooterClimberSubsystem();
         boolean shooterMode = true;
 
         m_shooterClimber = Optional.of(shooterClimber);
 
-        Command ShooterCommand = new ShooterCommand(shooterClimber, shooterMode);
-        Command ShooterModeCommand = new ShooterModeCommand();
+        Command ShooterCommand = new ShooterCommand(shooterClimber);
 
         m_driverController.leftTrigger().whileTrue(ShooterCommand);
-
-        m_driverController.leftBumper().whileTrue(ShooterModeCommand);
-
-        return shooterMode;
 
     }
 

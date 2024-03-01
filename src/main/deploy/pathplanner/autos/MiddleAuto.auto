@@ -160,6 +160,12 @@
           "data": {
             "pathName": "shooterFromTopFarRing"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "end"
+          }
         }
       ]
     }

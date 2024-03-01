@@ -6,21 +6,15 @@ import frc.robot.subsystems.ShooterClimberSubsystem;
 public class ShooterCommand extends Command {
 
     private final ShooterClimberSubsystem shooterClimberSubsystem;
-    private final boolean shooterMode;
 
-    public ShooterCommand(ShooterClimberSubsystem shooterClimberSubsystem, boolean shooterMode) {
+    public ShooterCommand(ShooterClimberSubsystem shooterClimberSubsystem) {
         this.shooterClimberSubsystem = shooterClimberSubsystem;
-        this.shooterMode = new ShooterModeCommand().getShooterMode();
         addRequirements(shooterClimberSubsystem);
     }
 
     @Override
     public void execute() {
-        if (shooterMode == true) {
-            shooterClimberSubsystem.shootOnSpeaker();
-        } else {
-            shooterClimberSubsystem.shootOnAmp();
-        }
+        shooterClimberSubsystem.shootOnSpeaker();
     }
 
     @Override

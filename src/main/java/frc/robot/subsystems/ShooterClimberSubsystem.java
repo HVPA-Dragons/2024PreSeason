@@ -42,16 +42,18 @@ public class ShooterClimberSubsystem extends SubsystemBase {
     }
 
     public void shootOnSpeaker() {
-        shooterMotor1.set(1);
-        shooterMotor2.set(-1);
+        shooterMotor1.set(0.7);
+        shooterMotor2.set(0.7);
     }
 
     public void shootOnAmp() {
-        shooterMotor1.set(.25);
-        shooterMotor2.set(-.25);
+        shooterMotor1.set(1);
+        shooterMotor2.set(1);
     }
 
     public void stopShooter() {
+        shooterMotor1.set(0);
+        shooterMotor2.set(0);
 
     }
 
