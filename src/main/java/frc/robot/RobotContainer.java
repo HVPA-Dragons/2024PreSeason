@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShootBackCommand;
 import frc.robot.commands.ShooterCommand;
 
 import frc.robot.commands.SwerveDrive.FieldRelativeAbsoluteAngleDrive;
@@ -18,6 +19,8 @@ import frc.robot.utils.SendableChooserCommand;
 
 import java.util.Optional;
 import java.util.function.Supplier;
+
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -43,6 +46,8 @@ public class RobotContainer {
         setupSwerveDrive();
         setupIntake();
         setupShooterClimber();
+        NamedCommands.registerCommand("ShootOnSpeaker", new ShooterCommand(m_shooterClimber.get()));
+        NamedCommands.registerCommand("Intake", new IntakeCommand(m_intake.get()));
 
     }
 
@@ -71,8 +76,8 @@ public class RobotContainer {
 
         Supplier<Rotation2d> angle = () -> {
             return new Rotation2d(
-                    rightX.deadzone(0.75).getAsDouble(),
-                    rightY.deadzone(0.75).getAsDouble());
+                    rightX.deadzone(1).getAsDouble(),
+                    rightY.deadzone(1).getAsDouble());
         };
 
         var leftX = DoubleTransformer.of(m_driverController::getLeftX).deadzone();
@@ -130,9 +135,10 @@ public class RobotContainer {
         m_shooterClimber = Optional.of(shooterClimber);
 
         Command ShooterCommand = new ShooterCommand(shooterClimber);
+        Command ShootBackCommand = new ShootBackCommand(shooterClimber, m_intake.get());
 
         m_driverController.leftTrigger().whileTrue(ShooterCommand);
+        m_driverController.leftBumper().whileTrue(ShootBackCommand);
 
     }
-
 }

@@ -18,7 +18,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
+                  "name": "ShootOnSpeaker"
                 }
               },
               {
@@ -43,7 +43,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
+                  "name": "Intake"
                 }
               },
               {
@@ -68,7 +68,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
+                  "name": "ShootOnSpeaker"
                 }
               },
               {
@@ -93,7 +93,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
+                  "name": "Intake"
                 }
               },
               {
@@ -118,7 +118,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
+                  "name": "ShootOnSpeaker"
                 }
               },
               {
@@ -143,7 +143,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
+                  "name": "Intake"
                 }
               },
               {
@@ -162,9 +162,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "end"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootOnSpeaker"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.15
+                }
+              }
+            ]
           }
         }
       ]

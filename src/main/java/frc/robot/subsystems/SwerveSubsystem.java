@@ -3,6 +3,11 @@ package frc.robot.subsystems;
 import java.io.File;
 import java.io.IOException;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -46,6 +51,33 @@ public class SwerveSubsystem extends SubsystemBase {
         // Drive gear ratio for the L1 is 8.14:1
         double driveMotorConversion = SwerveMath.calculateMetersPerRotation(inchesToMeters(4), 8.14);
         m_swerveDrive = parser.createSwerveDrive(maxSpeed, angleMotorConversionFactor, driveMotorConversion);
+
+        // TODO set up the auto builder here
+        // TODO get max speeds and tune PIDs,
+
+        // Configure the AutoBuilder last
+        /*
+         * AutoBuilder.configureHolonomic(
+         * this::getPose, // Robot pose supplier
+         * this::resetPose, // Method to reset odometry (will be called if auto has a
+         * starting pose)
+         * this::getVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+         * this::drive, // Method that will drive the robot given ROBOT RELATIVE
+         * ChassisSpeeds
+         * new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should
+         * likely live in your
+         * // Constants class
+         * new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+         * new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+         * 4.5, // Max module speed, in m/s
+         * 0.4, // Drive base radius in meters. Distance from robot center to furthest
+         * module.
+         * new ReplanningConfig() // Default path replanning config. See the API for the
+         * options here
+         * ), false,
+         * 
+         * );
+         */
     }
 
     @Override
@@ -119,4 +151,12 @@ public class SwerveSubsystem extends SubsystemBase {
             m_swerveDrive.zeroGyro();
         });
     }
+    /* Supplier for ChassisSpeeds */
+
+    public ChassisSpeeds getVelocity() {
+
+        return m_swerveDrive.getRobotVelocity();
+
+    }
+
 }

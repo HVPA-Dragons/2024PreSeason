@@ -14,15 +14,15 @@ public final class Constants {
 
     public static class IntakeConstants {
         /* Intake Can IDs */
-        public static final int kIntakeMotor1Port = 13;
-        public static final int kIntakeMotor2Port = 14;
+        public static final int kIntakeMotor1Port = 17;
+        public static final int kIntakeMotor2Port = 18;
     }
 
     public static class ShooterConstants {
         public static final int kShooterMotor1Port = 15;
         public static final int kShooterMotor2Port = 16;
-        public static final int kShooterAngleMotor1Port = 17;
-        public static final int kShooterAngleMotor2Port = 18;
+        public static final int kShooterAngleMotor1Port = 13;
+        public static final int kShooterAngleMotor2Port = 14;
 
     }
 
