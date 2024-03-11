@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AngleDownCommand;
+import frc.robot.commands.AngleUpCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootBackCommand;
 import frc.robot.commands.ShooterCommand;
@@ -21,6 +23,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -52,7 +55,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return Commands.none();
+        return new PathPlannerAuto("MiddleAuto");
     }
 
     private void setupSwerveDrive() {
@@ -130,15 +133,20 @@ public class RobotContainer {
 
     private void setupShooterClimber() {
         var shooterClimber = new ShooterClimberSubsystem();
-        boolean shooterMode = true;
 
         m_shooterClimber = Optional.of(shooterClimber);
 
         Command ShooterCommand = new ShooterCommand(shooterClimber);
         Command ShootBackCommand = new ShootBackCommand(shooterClimber, m_intake.get());
+        Command AngleUp = new AngleUpCommand(shooterClimber);
+        Command AngleDown = new AngleDownCommand(shooterClimber);
 
         m_driverController.leftTrigger().whileTrue(ShooterCommand);
+
         m_driverController.leftBumper().whileTrue(ShootBackCommand);
+
+        m_driverController.x().whileTrue(AngleUp);
+        m_driverController.y().whileTrue(AngleDown);
 
     }
 }

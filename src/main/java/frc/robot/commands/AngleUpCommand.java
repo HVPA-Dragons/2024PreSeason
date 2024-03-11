@@ -3,23 +3,23 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterClimberSubsystem;
 
-public class ShooterCommand extends Command {
+public class AngleUpCommand extends Command {
+    private ShooterClimberSubsystem shooterClimberSubsystem;
 
-    private final ShooterClimberSubsystem shooterClimberSubsystem;
-
-    public ShooterCommand(ShooterClimberSubsystem shooterClimberSubsystem) {
+    public AngleUpCommand(ShooterClimberSubsystem shooterClimberSubsystem) {
         this.shooterClimberSubsystem = shooterClimberSubsystem;
+
         addRequirements(shooterClimberSubsystem);
     }
 
     @Override
     public void execute() {
-        shooterClimberSubsystem.shootOnSpeaker();
-
+        shooterClimberSubsystem.AngleUp();
     }
 
     @Override
     public void end(boolean interrupted) {
-        shooterClimberSubsystem.stopShooter();
+        shooterClimberSubsystem.HoldAngle();
+
     }
 }

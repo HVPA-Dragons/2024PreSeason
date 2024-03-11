@@ -55,7 +55,9 @@ public class FieldRelativeRotationRateDrive extends Command {
 
         Translation2d translation = translationSupplier.get();
         var vx = MAX_SPEED.times(translation.getX() * drive_sensitivity);
+        System.out.println(vx);
         var vy = MAX_SPEED.times(translation.getY() * drive_sensitivity);
+        System.out.println(vy);
         var omega = MAX_OMEGA.times(omegaSupplier.getAsDouble() * turn_sensitivity);
 
         ChassisSpeeds speeds = new ChassisSpeeds(vx, vy, omega);

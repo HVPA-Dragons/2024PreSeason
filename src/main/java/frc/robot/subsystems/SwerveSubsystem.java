@@ -45,7 +45,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
         // https://www.swervedrivespecialties.com/products/mk4-swerve-module
         // L1 free speed is allegedly 12.5 ft/s
-        double maxSpeed = feetToMeters(12.5);
+        double maxSpeed = feetToMeters(16);
         // Steering gear ratio of the MK4 is 12.8:1
         double angleMotorConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(21.428571429);
         // Drive gear ratio for the L1 is 8.14:1
@@ -56,28 +56,24 @@ public class SwerveSubsystem extends SubsystemBase {
         // TODO get max speeds and tune PIDs,
 
         // Configure the AutoBuilder last
-        /*
-         * AutoBuilder.configureHolonomic(
-         * this::getPose, // Robot pose supplier
-         * this::resetPose, // Method to reset odometry (will be called if auto has a
-         * starting pose)
-         * this::getVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-         * this::drive, // Method that will drive the robot given ROBOT RELATIVE
-         * ChassisSpeeds
-         * new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should
-         * likely live in your
-         * // Constants class
-         * new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-         * new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-         * 4.5, // Max module speed, in m/s
-         * 0.4, // Drive base radius in meters. Distance from robot center to furthest
-         * module.
-         * new ReplanningConfig() // Default path replanning config. See the API for the
-         * options here
-         * ), false,
-         * 
-         * );
-         */
+
+        AutoBuilder.configureHolonomic(
+                this::getPose, // Robot pose supplier
+                this::resetPose, // Method to reset odometry (will be called if auto has a starting pose)
+                this::getVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                this::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
+                                                 // Constants class
+                        new PIDConstants(1, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(1, 0.0, 0.0), // Rotation PID constants
+                        4.5, // Max module speed, in m/s
+                        0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                        new ReplanningConfig() // Default path replanning config. See the API for the options here
+                ), () -> false, // Boolean supplier for flipping auto path
+                this // Swerve subsystem
+
+        );
+
     }
 
     @Override

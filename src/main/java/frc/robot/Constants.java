@@ -19,6 +19,7 @@ public final class Constants {
     }
 
     public static class ShooterConstants {
+        /* Shooter Can IDs */
         public static final int kShooterMotor1Port = 15;
         public static final int kShooterMotor2Port = 16;
         public static final int kShooterAngleMotor1Port = 13;

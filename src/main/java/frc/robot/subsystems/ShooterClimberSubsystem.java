@@ -11,8 +11,7 @@ import edu.wpi.first.math.controller.*;
 public class ShooterClimberSubsystem extends SubsystemBase {
     private final CANSparkMax shooterMotor1;
     private final CANSparkMax shooterMotor2;
-    private final Encoder shooterAngleEncoder;
-    private final PIDController shooterAngleController;
+
     private final CANSparkMax shooterAngleMotor1;
     private final CANSparkMax shooterAngleMotor2;
 
@@ -25,20 +24,25 @@ public class ShooterClimberSubsystem extends SubsystemBase {
         shooterMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
         shooterAngleMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         shooterAngleMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        shooterAngleEncoder = new Encoder(0, 1);
-        shooterAngleController = new PIDController(0.1, 0.1, 0.1);
 
     }
 
-    public void SetAngle(double targetAngle) {
-        /* Calculates speeds to reach target angle */
-        double currentAngle = shooterAngleEncoder.get();
-        double output = shooterAngleController.calculate(currentAngle, targetAngle);
+    public void AngleDown() {
+        shooterAngleMotor1.set(-1);
+        shooterAngleMotor2.set(1);
 
-        /* Sets the motor speeds to reach target angle */
-        shooterAngleMotor1.set(output);
-        shooterAngleMotor2.set(-output);
+    }
 
+    public void AngleUp() {
+        shooterAngleMotor1.set(1);
+        shooterAngleMotor2.set(-1);
+
+    }
+
+    public void HoldAngle() {
+
+        shooterAngleMotor1.set(0);
+        shooterAngleMotor2.set(0);
     }
 
     public void shootOnSpeaker() {
@@ -58,8 +62,8 @@ public class ShooterClimberSubsystem extends SubsystemBase {
     }
 
     public void shootBack() {
-        shooterMotor1.set(-.2);
-        shooterMotor2.set(-.2);
+        shooterMotor1.set(-0.2);
+        shooterMotor2.set(-0.2);
 
     }
 
@@ -73,6 +77,14 @@ public class ShooterClimberSubsystem extends SubsystemBase {
 
     public Command cShootBack() {
         return this.runEnd(this::shootBack, this::stopShooter);
+    }
+
+    public Command cAngleUp() {
+        return this.runEnd(this::AngleUp, this::HoldAngle);
+    }
+
+    public Command cAngleDown() {
+        return this.runEnd(this::AngleDown, this::HoldAngle);
     }
 
 }
