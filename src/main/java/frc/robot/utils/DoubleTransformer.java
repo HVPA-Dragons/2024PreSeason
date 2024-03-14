@@ -73,7 +73,7 @@ public class DoubleTransformer implements DoubleSupplier {
      * @return A new {@code DoubleTransformer} with deadzone applied.
      */
     public DoubleTransformer deadzone(double deadzone) {
-        return map((x) -> Math.abs(x) < deadzone ? 0.05 : x);
+        return map((x) -> Math.abs(x) < deadzone ? 0 : x);
     }
 
     /**
@@ -83,7 +83,7 @@ public class DoubleTransformer implements DoubleSupplier {
      * @return A new {@code DoubleTransformer} with deadzone applied.
      */
     public DoubleTransformer deadzone() {
-        return deadzone(0.03);
+        return deadzone(0.05);
     }
 
     /**
