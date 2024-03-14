@@ -44,33 +44,34 @@ public class SwerveSubsystem extends SubsystemBase {
         SwerveParser parser = new SwerveParser(new File(Filesystem.getDeployDirectory(), swerveDir));
 
         // https://www.swervedrivespecialties.com/products/mk4-swerve-module
-        // L1 free speed is allegedly 12.5 ft/s
-        double maxSpeed = feetToMeters(16);
+        // L3 free speed is around 19.3-19.5 ft/s
+        double maxSpeed = feetToMeters(19.3);
         // Steering gear ratio of the MK4 is 12.8:1
         double angleMotorConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(21.428571429);
-        // Drive gear ratio for the L1 is 8.14:1
-        double driveMotorConversion = SwerveMath.calculateMetersPerRotation(inchesToMeters(4), 8.14);
+        // Drive gear ratio for the L3 is 6.12:1
+        double driveMotorConversion = SwerveMath.calculateMetersPerRotation(inchesToMeters(4), 6.12);
         m_swerveDrive = parser.createSwerveDrive(maxSpeed, angleMotorConversionFactor, driveMotorConversion);
 
         // TODO set up the auto builder here
         // TODO get max speeds and tune PIDs,
 
         AutoBuilder.configureHolonomic(
-                this::getPose,
-                this::resetPose,
-                this::getVelocity,
-                this::driveRobotRelative,
-                new HolonomicPathFollowerConfig(
-                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-                        4.5,
-                        m_swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(),
-                        new ReplanningConfig()),
-                () -> {
-                    var alliance = DriverStation.getAlliance();
-                    return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
-                },
-                this);
+                this::getPose, // Robot pose supplier
+                this::resetPose, // Method to reset odometry (will be called if auto has a starting pose)
+                this::getVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                this::driveRobotOriented, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
+                                                 // Constants class
+                        new PIDConstants(1, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(1, 0.0, 0.0), // Rotation PID constants
+                        4.5, // Max module speed, in m/s
+                        0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                        new ReplanningConfig() // Default path replanning config. See the API for the options here
+                ), () -> false, // Boolean supplier for flipping auto path
+                this // Swerve subsystem
+
+        );
+
     }
 
     @Override
@@ -102,11 +103,8 @@ public class SwerveSubsystem extends SubsystemBase {
         m_swerveDrive.driveFieldOriented(chassisSpeeds);
     }
 
-    /**
-     * Robot-relative swerve drive.
-     */
-    public void driveRobotRelative(ChassisSpeeds chassisSpeeds) {
-        m_swerveDrive.drive(realSpeed);   
+    public void driveRobotOriented(ChassisSpeeds chassisSpeeds) {
+        m_swerveDrive.drive(chassisSpeeds);
     }
 
     /**

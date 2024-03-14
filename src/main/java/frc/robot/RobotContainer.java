@@ -55,7 +55,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("MiddleAuto");
+        return new PathPlannerAuto("New Auto");
     }
 
     private void setupSwerveDrive() {
