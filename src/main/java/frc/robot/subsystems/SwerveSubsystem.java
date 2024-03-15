@@ -16,6 +16,7 @@ import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.Velocity;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -56,21 +57,21 @@ public class SwerveSubsystem extends SubsystemBase {
         // TODO get max speeds and tune PIDs,
 
         AutoBuilder.configureHolonomic(
-                this::getPose, // Robot pose supplier
-                this::resetPose, // Method to reset odometry (will be called if auto has a starting pose)
-                this::getVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                this::driveRobotOriented, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
-                                                 // Constants class
-                        new PIDConstants(1, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(1, 0.0, 0.0), // Rotation PID constants
-                        4.5, // Max module speed, in m/s
-                        0.4, // Drive base radius in meters. Distance from robot center to furthest module.
-                        new ReplanningConfig() // Default path replanning config. See the API for the options here
-                ), () -> false, // Boolean supplier for flipping auto path
-                this // Swerve subsystem
-
-        );
+                this::getPose,
+                this::resetPose,
+                this::getVelocity,
+                this::driveRobotRelative,
+                new HolonomicPathFollowerConfig(
+                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                        4.5,
+                        m_swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(),
+                        new ReplanningConfig()),
+                () -> {
+                    var alliance = DriverStation.getAlliance();
+                    return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
+                },
+                this);
 
     }
 
@@ -103,7 +104,10 @@ public class SwerveSubsystem extends SubsystemBase {
         m_swerveDrive.driveFieldOriented(chassisSpeeds);
     }
 
-    public void driveRobotOriented(ChassisSpeeds chassisSpeeds) {
+    /**
+     * Robot-relative swerve drive.
+     */
+    public void driveRobotRelative(ChassisSpeeds chassisSpeeds) {
         m_swerveDrive.drive(chassisSpeeds);
     }
 
