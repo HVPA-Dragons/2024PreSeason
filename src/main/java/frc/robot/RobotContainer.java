@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AngleDownCommand;
 import frc.robot.commands.AngleUpCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ReadEncoderCommand;
 import frc.robot.commands.ShootBackCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.StartupZeroCommand;
@@ -140,6 +141,8 @@ public class RobotContainer {
         Command ShootBackCommand = new ShootBackCommand(shooterClimber, m_intake.get());
         Command AngleUp = new AngleUpCommand(shooterClimber);
         Command AngleDown = new AngleDownCommand(shooterClimber);
+        Command startupZero = new StartupZeroCommand(shooterClimber);
+        Command readencoder = new ReadEncoderCommand(shooterClimber);
 
         m_driverController.leftTrigger().whileTrue(ShooterCommand);
 
@@ -147,7 +150,8 @@ public class RobotContainer {
 
         m_driverController.x().whileTrue(AngleUp);
         m_driverController.y().whileTrue(AngleDown);
-        shooterClimber.startupZero();
+        m_driverController.a().whileTrue(startupZero);
+        m_driverController.b().whileTrue(readencoder);
 
     }
 }

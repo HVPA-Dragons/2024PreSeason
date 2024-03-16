@@ -32,14 +32,28 @@ public class ShooterClimberSubsystem extends SubsystemBase {
     }
 
     public void AngleDown() {
+        if (shooterAngleZeroSensor.get()) {
+            shooterAngleMotor1.set(0);
+            shooterAngleMotor2.set(0);
+        } else {
+            shooterAngleMotor1.set(-1);
+            shooterAngleMotor2.set(1);
+        }
+
         shooterAngleMotor1.set(-1);
         shooterAngleMotor2.set(1);
 
     }
 
     public void AngleUp() {
-        shooterAngleMotor1.set(1);
-        shooterAngleMotor2.set(-1);
+        if (shooterEncoder.getDistance() >= 100) {
+            shooterAngleMotor1.set(0);
+            shooterAngleMotor2.set(0);
+        } else {
+            shooterAngleMotor1.set(1);
+            shooterAngleMotor2.set(-1);
+
+        }
 
     }
 
@@ -47,6 +61,7 @@ public class ShooterClimberSubsystem extends SubsystemBase {
 
         shooterAngleMotor1.set(0);
         shooterAngleMotor2.set(0);
+
     }
 
     public void shootOnSpeaker() {
@@ -72,7 +87,8 @@ public class ShooterClimberSubsystem extends SubsystemBase {
     }
 
     public void readAngle() {
-        shooterEncoder.getDistance();
+        System.out.println("Encoder:");
+        System.out.println(shooterEncoder.getDistance());
     }
 
     public void resetAngleEncoder() {
@@ -81,7 +97,8 @@ public class ShooterClimberSubsystem extends SubsystemBase {
 
     public void startupZero() {
         System.out.println("Sending Shooter Down");
-        AngleDown();
+        shooterAngleMotor1.set(-1);
+        shooterAngleMotor2.set(1);
         while (shooterAngleZeroSensor.get()) {
             System.out.println("Homing");
         }
