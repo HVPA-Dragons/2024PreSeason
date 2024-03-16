@@ -10,7 +10,7 @@ import frc.robot.commands.AngleUpCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootBackCommand;
 import frc.robot.commands.ShooterCommand;
-
+import frc.robot.commands.StartupZeroCommand;
 import frc.robot.commands.SwerveDrive.FieldRelativeAbsoluteAngleDrive;
 import frc.robot.commands.SwerveDrive.FieldRelativeRotationRateDrive;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -51,7 +51,7 @@ public class RobotContainer {
         setupShooterClimber();
         NamedCommands.registerCommand("ShootOnSpeaker", new ShooterCommand(m_shooterClimber.get()));
         NamedCommands.registerCommand("Intake", new IntakeCommand(m_intake.get()));
-
+        System.out.println("In Robot Container!");
     }
 
     public Command getAutonomousCommand() {
@@ -131,7 +131,7 @@ public class RobotContainer {
         m_driverController.rightTrigger().whileTrue(IntakeCommand);
     }
 
-    private void setupShooterClimber() {
+    public void setupShooterClimber() {
         var shooterClimber = new ShooterClimberSubsystem();
 
         m_shooterClimber = Optional.of(shooterClimber);
@@ -147,6 +147,7 @@ public class RobotContainer {
 
         m_driverController.x().whileTrue(AngleUp);
         m_driverController.y().whileTrue(AngleDown);
+        shooterClimber.startupZero();
 
     }
 }
