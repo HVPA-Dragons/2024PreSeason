@@ -12,37 +12,12 @@ public class ShooterClimberSubsystem extends SubsystemBase {
     private final CANSparkMax shooterMotor1;
     private final CANSparkMax shooterMotor2;
 
-    private final CANSparkMax shooterAngleMotor1;
-    private final CANSparkMax shooterAngleMotor2;
-
     public ShooterClimberSubsystem() {
         shooterMotor1 = new CANSparkMax(Constants.ShooterConstants.kShooterMotor1Port, MotorType.kBrushless);
         shooterMotor2 = new CANSparkMax(Constants.ShooterConstants.kShooterMotor2Port, MotorType.kBrushless);
-        shooterAngleMotor1 = new CANSparkMax(Constants.ShooterConstants.kShooterAngleMotor1Port, MotorType.kBrushless);
-        shooterAngleMotor2 = new CANSparkMax(Constants.ShooterConstants.kShooterAngleMotor2Port, MotorType.kBrushless);
         shooterMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
         shooterMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        shooterAngleMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        shooterAngleMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-    }
-
-    public void AngleDown() {
-        shooterAngleMotor1.set(-1);
-        shooterAngleMotor2.set(1);
-
-    }
-
-    public void AngleUp() {
-        shooterAngleMotor1.set(1);
-        shooterAngleMotor2.set(-1);
-
-    }
-
-    public void HoldAngle() {
-
-        shooterAngleMotor1.set(0);
-        shooterAngleMotor2.set(0);
     }
 
     public void shootOnSpeaker() {
@@ -77,14 +52,6 @@ public class ShooterClimberSubsystem extends SubsystemBase {
 
     public Command cShootBack() {
         return this.runEnd(this::shootBack, this::stopShooter);
-    }
-
-    public Command cAngleUp() {
-        return this.runEnd(this::AngleUp, this::HoldAngle);
-    }
-
-    public Command cAngleDown() {
-        return this.runEnd(this::AngleDown, this::HoldAngle);
     }
 
 }

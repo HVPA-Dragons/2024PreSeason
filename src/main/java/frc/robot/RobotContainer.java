@@ -5,17 +5,17 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.AngleDownCommand;
-import frc.robot.commands.AngleUpCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootBackCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.IRRead;
 
 import frc.robot.commands.SwerveDrive.FieldRelativeAbsoluteAngleDrive;
 import frc.robot.commands.SwerveDrive.FieldRelativeRotationRateDrive;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.ShooterClimberSubsystem;
+import frc.robot.subsystems.SensorSuiteSubsystem;
 import frc.robot.utils.DoubleTransformer;
 import frc.robot.utils.SendableChooserCommand;
 
@@ -28,6 +28,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -37,6 +38,7 @@ public class RobotContainer {
     private Optional<SwerveSubsystem> m_swerveDrive = Optional.empty();
     private Optional<IntakeSubsystem> m_intake = Optional.empty();
     private Optional<ShooterClimberSubsystem> m_shooterClimber = Optional.empty();
+    private Optional<SensorSuiteSubsystem> m_sensorSuite = Optional.empty();
 
     private final CommandXboxController m_driverController = new CommandXboxController(0);
     private final CommandXboxController m_operatorController = new CommandXboxController(1); /*
@@ -49,6 +51,7 @@ public class RobotContainer {
         setupSwerveDrive();
         setupIntake();
         setupShooterClimber();
+        setupSensorSuite();
         NamedCommands.registerCommand("ShootOnSpeaker", new ShooterCommand(m_shooterClimber.get()));
         NamedCommands.registerCommand("Intake", new IntakeCommand(m_intake.get()));
 
@@ -138,15 +141,21 @@ public class RobotContainer {
 
         Command ShooterCommand = new ShooterCommand(shooterClimber);
         Command ShootBackCommand = new ShootBackCommand(shooterClimber, m_intake.get());
-        Command AngleUp = new AngleUpCommand(shooterClimber);
-        Command AngleDown = new AngleDownCommand(shooterClimber);
 
         m_driverController.leftTrigger().whileTrue(ShooterCommand);
 
         m_driverController.leftBumper().whileTrue(ShootBackCommand);
 
-        m_driverController.x().whileTrue(AngleUp);
-        m_driverController.y().whileTrue(AngleDown);
+    }
+
+    private void setupSensorSuite() {
+        var sensorSuite = new SensorSuiteSubsystem();
+
+        m_sensorSuite = Optional.of(sensorSuite);
+
+        Command IRReadCommand = new IRRead(sensorSuite);
+
+        m_driverController.y().whileTrue(IRReadCommand);
 
     }
 }

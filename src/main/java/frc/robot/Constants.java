@@ -22,8 +22,6 @@ public final class Constants {
         /* Shooter Can IDs */
         public static final int kShooterMotor1Port = 15;
         public static final int kShooterMotor2Port = 16;
-        public static final int kShooterAngleMotor1Port = 13;
-        public static final int kShooterAngleMotor2Port = 14;
 
     }
 
