@@ -53,9 +53,6 @@ public class SwerveSubsystem extends SubsystemBase {
         double driveMotorConversion = SwerveMath.calculateMetersPerRotation(inchesToMeters(4), 6.12);
         m_swerveDrive = parser.createSwerveDrive(maxSpeed, angleMotorConversionFactor, driveMotorConversion);
 
-        // TODO set up the auto builder here
-        // TODO get max speeds and tune PIDs,
-
         AutoBuilder.configureHolonomic(
                 this::getPose,
                 this::resetPose,

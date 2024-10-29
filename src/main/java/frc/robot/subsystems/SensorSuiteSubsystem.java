@@ -12,15 +12,14 @@ public class SensorSuiteSubsystem extends SubsystemBase {
 
     private final DigitalInput IRSensor;
 
-    /* Can IDs */
     public SensorSuiteSubsystem() {
-
+        // Port for the sensors
         IRSensor = new DigitalInput(0);
 
     }
 
     public void ReadIRSensor() {
-
+        // TODO use the sensor for stuff
         System.out.println(IRSensor.get());
 
     }

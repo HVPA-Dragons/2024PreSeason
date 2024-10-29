@@ -24,18 +24,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
     }
 
-    /* Runs intake motors at half speed and runs back if a note is inserted */
+    /* Runs the intake. */
     public void intake() {
-        if (intakeStopSensor.get()) {
-            intakeMotor1.set(.1);
-            intakeMotor2.set(.1);
-        }
-
-        else {
-            intakeMotor1.set(-.5);
-            intakeMotor2.set(-.5);
-        }
-
+        intakeMotor1.set(-.7);
+        intakeMotor2.set(-.7);
     }
 
     /* Stops the intake */
@@ -44,6 +36,7 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeMotor2.set(0);
     }
 
+    /* Runs the intake motors in reverse. */
     public void BackTake() {
 
         intakeMotor1.set(.2);
