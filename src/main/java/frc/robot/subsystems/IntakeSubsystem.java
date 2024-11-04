@@ -26,8 +26,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
     /* Runs the intake. */
     public void intake() {
-        intakeMotor1.set(-.7);
-        intakeMotor2.set(-.7);
+        intakeMotor1.set(-1);
+        intakeMotor2.set(-1);
     }
 
     /* Stops the intake */
@@ -39,8 +39,8 @@ public class IntakeSubsystem extends SubsystemBase {
     /* Runs the intake motors in reverse. */
     public void BackTake() {
 
-        intakeMotor1.set(.2);
-        intakeMotor2.set(.2);
+        intakeMotor1.set(1);
+        intakeMotor2.set(1);
     }
 
 }

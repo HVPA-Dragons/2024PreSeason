@@ -37,8 +37,8 @@ public class ShooterClimberSubsystem extends SubsystemBase {
     }
 
     public void shootBack() {
-        shooterMotor1.set(-0.2);
-        shooterMotor2.set(-0.2);
+        shooterMotor1.set(-1);
+        shooterMotor2.set(-1);
 
     }
 
